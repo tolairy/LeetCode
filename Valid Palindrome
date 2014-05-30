@@ -1,0 +1,49 @@
+class Solution {
+public:
+    bool isEqual(char a, char b){
+        if (a >='A' && a <= 'Z') {
+            a += 32;
+        }
+        if (b >='A' && b <= 'Z') {
+            b += 32;
+        }
+        return a == b;
+    }
+    bool isPalindrome(string s) {
+        if (s.length() == 0) {
+            return true;
+        }
+        int i, j;
+        for (i = 0, j = s.length()-1; i < j; ) {
+            
+            if (isAlphanumeric(s[i])) {
+                if (isAlphanumeric(s[j])) {
+                    if (isEqual(s[i], s[j])) {
+                        i++;
+                        j--;
+                    }else {
+                        return false;
+                    }
+                }else {
+                    j--;
+                }
+            }else {
+                if (isAlphanumeric(s[j])) {
+                    i++;
+                }else {
+                    i++;
+                    j--;
+                }
+            }
+        }
+        return true;
+    }
+    
+     bool isAlphanumeric(char c) {
+        if ((c >='A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >='0' && c <='9')) {
+            return true;
+        }else {
+            return false;
+        }
+    }
+};
