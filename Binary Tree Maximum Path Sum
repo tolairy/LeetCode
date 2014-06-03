@@ -1,0 +1,70 @@
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    struct ChildInfo {
+        int maxDedup;
+        int maxPath;
+        ChildInfo(int x, int y) : maxDedup(x), maxPath(y){}
+    };
+    ChildInfo *maxChild(TreeNode *root) {
+        if (root == NULL) {
+            return (new ChildInfo(0, 0));
+        }
+        ChildInfo *left = maxChild(root->left);
+        ChildInfo *right = maxChild(root->right);
+        
+        int maxDedup = root->val;
+        if (left->maxDedup>right->maxDedup) {
+            if (left->maxDedup > 0)
+                maxDedup += left->maxDedup;
+        } else {
+            if (right->maxDedup > 0)
+                maxDedup += right->maxDedup;
+        }
+        
+       
+        int maxRoot = root->val;
+    
+        if (left->maxDedup > 0) {
+           maxRoot += left->maxDedup;
+        }
+        if (right->maxDedup > 0) {
+            maxRoot += right->maxDedup;
+        }
+        
+        int maxPath;
+        if (root->left == NULL && root->right == NULL) {
+            maxPath = root->val;
+        }else if (root->left && root->right == NULL) {
+            maxPath = (maxRoot>left->maxPath)?maxRoot:left->maxPath;     
+        }else if (root->left == NULL && root->right) {
+            maxPath = (maxRoot>right->maxPath)?maxRoot:right->maxPath;   
+        }else if (root->left && root->right) {
+            int maxChildPath = (left->maxPath>right->maxPath?left->maxPath:right->maxPath);
+            maxPath = (maxRoot>maxChildPath)?maxRoot:maxChildPath;
+        }
+            
+        
+        delete left;
+        delete right;
+        return (new ChildInfo(maxDedup, maxPath));
+        
+    }
+    int maxPathSum(TreeNode *root) {
+        
+        
+        ChildInfo *result = maxChild(root);
+        int output = result->maxPath;
+        delete result;
+        return output;
+       
+    }
+};
