@@ -1,0 +1,37 @@
+class Solution {
+public:
+    int minimumTotal(vector<vector<int> > &triangle) {
+        if (triangle.size() == 0) {
+            return 0;
+        }
+        int size = triangle.size();
+        int *pre = new int[size];//()是赋初值，[]是指定数组大小
+        int *next = new int[size];
+        
+        memset(pre, 0, triangle.size() * sizeof(int));
+        memset(next, 0, triangle.size() * sizeof(int));
+        
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < (triangle[i]).size(); j++) {
+                if (j == 0) {
+                    next[j] = pre[j] + triangle[i][j];
+                } else if (j == ((triangle[i]).size() - 1)) {
+                    next[j] = pre[j-1] + triangle[i][j];
+                }else {
+                    next[j] = triangle[i][j] + ((pre[j-1]>pre[j])?pre[j]:pre[j-1]);//?:表达式打上括号
+                }
+            }
+            int *tmp = pre;
+            pre = next;
+            next = tmp;
+        }
+        
+        int min = pre[0];
+        for (int i = 1; i < size; i++) {
+          if (min > pre[i]) {
+               min = pre[i];
+           } 
+        }
+        return min;
+    }
+};
