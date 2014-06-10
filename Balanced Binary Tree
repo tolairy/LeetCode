@@ -1,0 +1,40 @@
+class Solution {
+public:
+
+    bool treeDepth(TreeNode *root, int &depth) {
+        if (root == NULL){
+            depth = 0;
+            return true;
+        }
+        
+        int left, right;
+        
+        if (treeDepth(root->left, left) && treeDepth(root->right, right)) {
+            
+            if (abs(left-right) <= 1) {
+                depth = 1 + ((left>right)?left:right);
+                return true;
+            } 
+        }
+        return false;
+    }
+    
+    bool isBalanced(TreeNode *root) {
+        if (root == NULL) {
+            return true;
+        }
+        
+        int left, right;
+        
+        if (treeDepth(root->left, left) && treeDepth(root->right, right)) {
+            
+            if (abs(left-right) <= 1) {
+            return true;
+            } 
+        }
+        
+        return false;
+    
+       
+    }
+};
