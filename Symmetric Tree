@@ -1,0 +1,63 @@
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+  
+    bool levelSymmetric(vector<TreeNode *> &cur, int &iscontinue) {
+        iscontinue = 0;
+        for (int i = 0, j = cur.size() - 1; i <= j; i++, j--) {
+            if (cur[i] == NULL) {
+                if (cur[j] != NULL) {
+                    return false;
+                }
+            }else { //cur[i] not null
+                if (cur[j] == NULL) {
+                    return false;
+                }else {
+                    if (cur[i]->val != cur[j]->val) {
+                        return false;
+                    }
+                    iscontinue = 1;
+                }
+            }
+        }
+        return true;
+        
+    }
+    bool isSymmetric(TreeNode *root) {
+        
+        if (root == NULL) {
+            return true;
+        }
+        
+        vector<TreeNode *> cur, next;
+        
+        cur.push_back(root);
+        int iscontinue = 1;
+        
+        while(iscontinue) {
+            if (!levelSymmetric(cur, iscontinue)) {
+                return false;
+            }
+            
+            for (int i = 0; i < cur.size(); i++) {
+                if (cur[i] != NULL) {
+                      next.push_back(cur[i]->left); 
+                      next.push_back(cur[i]->right); 
+                }
+            }
+            cur.clear();
+            cur = next;
+            next.clear();
+            
+        }
+        return true;
+    }
+};
