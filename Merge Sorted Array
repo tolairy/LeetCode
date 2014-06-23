@@ -1,0 +1,35 @@
+class Solution {
+public:
+    void merge(int A[], int m, int B[], int n) {
+        if (n == 0) {
+            return;
+        }
+        
+        int cur_a = m - 1;
+        int cur_b = n - 1;
+        int cur_merg = m + n - 1;
+        
+        while (cur_merg >= 0) {
+            
+            if (A[cur_a] < B[cur_b]) {
+                A[cur_merg] = B[cur_b];
+                cur_b--;
+            }else {
+                A[cur_merg] = A[cur_a];
+                cur_a--;
+            }
+            cur_merg--;
+            
+            if (cur_b < 0) {
+                return;
+            }
+            if (cur_a < 0) {
+                for (int i = 0; i <= cur_b; i++) {
+                    A[i] = B[i];
+                    
+                }
+                return;
+            }
+        }
+    }
+};
