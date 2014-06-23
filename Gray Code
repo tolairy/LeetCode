@@ -1,0 +1,27 @@
+class Solution {
+public:
+    vector<int> grayCode(int n) {
+        
+        vector<int> result;
+        if (n == 0) {
+            result.push_back(0);
+            return result;
+        }
+        
+        result.push_back(0);
+        result.push_back(1);
+        
+        int pre = result.size();
+        
+        for (int i = 2; i <= n; i++) {
+            int cur_top_digit = 1 << (i-1);
+            for(int j = pre - 1; j >= 0; j--) {
+                int cur = result[j];
+                cur = cur | cur_top_digit;
+                result.push_back(cur);
+            }
+            pre = result.size();
+        }
+        return result;
+    }
+};
