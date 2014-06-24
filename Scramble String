@@ -1,0 +1,41 @@
+class Solution {
+public:
+    bool isScramble(string s1, string s2) {
+        if(s1.size() != s2.size()) return false;
+        if(s1.size() == 0) return true;
+        if(s1 == s2) return true;
+        bool ***iss = NULL;//iss[len][startIndexAtS1][startIndexAtS2]
+        iss = new bool**[s1.size()];
+        for(int len = 1;len <= s1.size(); ++len) {
+            //size at this level
+            int levelSize = s1.size() - len + 1;
+            int levelIndex = len - 1;
+            iss[levelIndex] = new bool*[levelSize];
+            for(int indexS1 = 0;indexS1 < levelSize; ++ indexS1) {
+                iss[levelIndex][indexS1] = new bool[levelSize];
+                for(int is2 = 0; is2 < levelSize; ++is2) {
+                    if(len == 1) {
+                        iss[levelIndex][indexS1][is2] = (s1[indexS1] == s2[is2]);
+                    } else {
+                        iss[levelIndex][indexS1][is2] = false;
+                        for(int seglen1 = 1; seglen1 < len; ++seglen1) {
+                            int seglen2 = len - seglen1;
+                            int sli1 = seglen1 - 1;
+                            int sli2 = seglen2 - 1;
+                            if(iss[sli1][indexS1][is2] && iss[sli2][indexS1 + seglen1][is2 + seglen1]) {
+                                iss[levelIndex][indexS1][is2] = true;
+                                break;
+                            }
+                            if(iss[sli1][indexS1][is2 + seglen2] && iss[sli2][indexS1 + seglen1][is2]) {
+                                iss[levelIndex][indexS1][is2] = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return iss[s1.size() - 1][0][0];
+       
+    }
+};
